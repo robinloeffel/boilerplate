@@ -105,10 +105,10 @@ gulp.task('watch', () => {
     gulp.watch(paths.src.files.root, ['copy']);
 });
 
-gulp.task('default', (cb) => {
+gulp.task('default', cb => {
     runSequence('clean', 'build', 'watch', 'server', 'open:browser', cb);
 });
 
-gulp.task('build', (cb) => {
+gulp.task('build', cb => {
     runSequence(['sass', 'js:transpile', 'img', 'copy'], cb);
 });

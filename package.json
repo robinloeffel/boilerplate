@@ -39,6 +39,6 @@
     "scripts": {
         "dev": "gulp --dev",
         "prod": "gulp",
-        "dist": "gulp dist"
+        "build": "gulp build"
     }
 }
