@@ -1,9 +1,10 @@
 const webpack = require('webpack'),
+    merge = require('webpack-merge'),
     browserlistConfig = require('./browserlist');
 
 let config = {
     output: {
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     devtool: 'source-map',
     module: {
@@ -32,7 +33,7 @@ let config = {
 };
 
 if (!process.argv.includes('--dev')) {
-    Object.assign(config, {
+    config = merge(config, {
         devtool: false,
         plugins: [
             new webpack.optimize.UglifyJsPlugin({

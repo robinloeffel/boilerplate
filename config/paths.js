@@ -8,7 +8,7 @@ module.exports = {
             html: 'src/*.html',
             sass: 'src/scss/*.{scss,sass}',
             js: {
-                entry: 'src/js/main.js',
+                entry: 'src/js/{main,head}.js',
                 all: 'src/js/*.js'
             },
             img: 'src/img/*.{png,jpg,jpeg,svg,gif}',

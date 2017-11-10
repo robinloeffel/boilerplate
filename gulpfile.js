@@ -5,6 +5,7 @@ const gulp = require('gulp'),
     open = require('open'),
     webpack = require('webpack'),
     webpackStream = require('webpack-stream'),
+    named = require('vinyl-named'),
     connect = require('gulp-connect'),
     plumber = require('gulp-plumber'),
     changed = require('gulp-changed'),
@@ -44,6 +45,7 @@ gulp.task('sass', () => {
 gulp.task('js:transpile', ['js:lint'], () => {
     return gulp.src(paths.src.files.js.entry)
         .pipe(plumber())
+        .pipe(named())
         .pipe(webpackStream(webpackConfig, webpack))
         .pipe(gulp.dest(paths.dist.js))
         .pipe(connect.reload());
