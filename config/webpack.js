@@ -15,20 +15,18 @@ let config = {
                 loader: 'babel-loader',
                 options: {
                     presets: [
-                        [
-                            'env',
-                            {
-                                targets: browserlistConfig,
-                                modules: false
-                            }
-                        ]
+                        ['env', {
+                            targets: {
+                                ie: 11,
+                                browsers: 'last 2 versions'
+                            },
+                            useBuiltIns: 'usage',
+                            modules: false
+                        }]
                     ]
                 }
             }]
         }]
-    },
-    resolve: {
-        extensions: ['.js']
     }
 };
 
@@ -36,19 +34,7 @@ if (!process.argv.includes('--dev')) {
     config = merge(config, {
         devtool: false,
         plugins: [
-            new webpack.optimize.UglifyJsPlugin({
-                mangle: {
-                    keep_fnames: true
-                },
-                output: {
-                    comments: false
-                }
-            }),
-
-            new webpack.LoaderOptionsPlugin({
-                minimize: true,
-                debug: false
-            })
+            new webpack.optimize.UglifyJsPlugin()
         ]
     });
 }
