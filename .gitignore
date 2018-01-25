@@ -2,6 +2,9 @@
 node_modules
 dist
 
+# misc
+report.html
+
 # os
 Thumbs.db
 ehthumbs.db

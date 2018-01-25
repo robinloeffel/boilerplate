@@ -1,6 +1,9 @@
-const webpack = require('webpack'),
-    merge = require('webpack-merge'),
-    browserlistConfig = require('./browserlist');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const webpackBundleAnalyzer = require('webpack-bundle-analyzer');
+const browserlistConfig = require('./browserlist');
+const dev = process.argv.includes('--dev');
+const stats = process.argv.includes('--stats');
 
 let config = {
     output: {
@@ -15,26 +18,38 @@ let config = {
                 loader: 'babel-loader',
                 options: {
                     presets: [
-                        ['env', {
+                        ['@babel/preset-env', {
                             targets: {
                                 ie: 11,
                                 browsers: 'last 2 versions'
                             },
                             useBuiltIns: 'usage',
-                            modules: false
+                            modules: false,
+                            debug: true
                         }]
-                    ]
+                    ],
+                    ignore: ['node_modules']
                 }
             }]
         }]
     }
 };
 
-if (!process.argv.includes('--dev')) {
+if (!dev) {
     config = merge(config, {
         devtool: false,
         plugins: [
             new webpack.optimize.UglifyJsPlugin()
+        ]
+    });
+}
+
+if (stats) {
+    config = merge(config, {
+        plugins: [
+            new webpackBundleAnalyzer.BundleAnalyzerPlugin({
+                analyzerMode: 'static'
+            })
         ]
     });
 }

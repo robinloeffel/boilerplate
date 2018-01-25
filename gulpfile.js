@@ -1,48 +1,53 @@
-const gulp = require('gulp'),
-    del = require('del'),
-    stylish = require('jshint-stylish'),
-    runSequence = require('run-sequence'),
-    open = require('open'),
-    webpack = require('webpack'),
-    webpackStream = require('webpack-stream'),
-    named = require('vinyl-named'),
-    connect = require('gulp-connect'),
-    plumber = require('gulp-plumber'),
-    changed = require('gulp-changed'),
-    sass = require('gulp-sass'),
-    autoprefixer = require('gulp-autoprefixer'),
-    cleanCss = require('gulp-clean-css'),
-    sourcemaps = require('gulp-sourcemaps'),
-    jshint = require('gulp-jshint'),
-    imagemin = require('gulp-imagemin'),
-    gIf = require('gulp-if'),
-    paths = require('./config/paths'),
-    webpackConfig = require('./config/webpack'),
-    connectConfig = require('./config/connect'),
-    browserlistConfig = require('./config/browserlist'),
-    devEnv = process.argv.includes('--dev');
+const gulp = require('gulp');
+const del = require('del');
+const stylish = require('jshint-stylish');
+const open = require('open');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
+const named = require('vinyl-named');
+
+const connect = require('gulp-connect');
+const plumber = require('gulp-plumber');
+const changed = require('gulp-changed');
+const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
+const cleanCss = require('gulp-clean-css');
+const sourcemaps = require('gulp-sourcemaps');
+const jshint = require('gulp-jshint');
+const imagemin = require('gulp-imagemin');
+const gIf = require('gulp-if');
+
+const paths = require('./config/paths');
+const webpackConfig = require('./config/webpack');
+const connectConfig = require('./config/connect');
+const browserlistConfig = require('./config/browserlist');
+
+const dev = process.argv.includes('--dev');
 
 gulp.task('clean', () => del(paths.dist.root));
 
-gulp.task('open:browser', () => open('http://localhost:' + connectConfig.port));
+gulp.task('open:page', () => open('http://localhost:' + connectConfig.port));
 
 gulp.task('open:folder', () => open('dist'));
 
-gulp.task('server', () => connect.server(connectConfig));
+gulp.task('server', done => {
+    connect.server(connectConfig);
+    done();
+});
 
 gulp.task('sass', () => {
     return gulp.src(paths.src.files.sass)
         .pipe(plumber())
-        .pipe(gIf(devEnv, sourcemaps.init()))
+        .pipe(gIf(dev, sourcemaps.init()))
         .pipe(sass.sync())
         .pipe(autoprefixer(browserlistConfig))
-        .pipe(gIf(!devEnv, cleanCss()))
-        .pipe(gIf(devEnv, sourcemaps.write('.')))
+        .pipe(gIf(!dev, cleanCss()))
+        .pipe(gIf(dev, sourcemaps.write('.')))
         .pipe(gulp.dest(paths.dist.css))
         .pipe(connect.reload());
 });
 
-gulp.task('js:transpile', ['js:lint'], () => {
+gulp.task('js:transpile', () => {
     return gulp.src(paths.src.files.js.entry)
         .pipe(plumber())
         .pipe(named())
@@ -98,17 +103,10 @@ gulp.task('copy', () => {
         .pipe(connect.reload());
 });
 
-gulp.task('watch', () => {
-    gulp.watch(paths.src.files.sass, ['sass']);
-    gulp.watch(paths.src.files.js.all, ['js:transpile']);
-    gulp.watch(paths.src.files.img, ['img']);
-    gulp.watch(paths.src.files.root, ['copy']);
-});
+gulp.watch(paths.src.files.sass, gulp.series('sass'));
+gulp.watch(paths.src.files.js.all, gulp.series('js:lint', 'js:transpile'));
+gulp.watch(paths.src.files.img, gulp.series('img'));
+gulp.watch(paths.src.files.sass, gulp.series('copy'));
 
-gulp.task('default', cb => {
-    runSequence('clean', 'build', 'watch', 'server', 'open:browser', cb);
-});
-
-gulp.task('build', cb => {
-    runSequence(['sass', 'js:transpile', 'img', 'copy'], cb);
-});
+gulp.task('build', gulp.parallel('js:lint', 'js:transpile', 'sass', 'img', 'copy'));
+gulp.task('default', gulp.series('clean', 'build', 'server', 'open:page'));
