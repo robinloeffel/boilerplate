@@ -10,6 +10,7 @@ let config = {
         filename: '[name].js'
     },
     devtool: 'source-map',
+    mode: 'development',
     module: {
         rules: [{
             test: /\.js$/,
@@ -38,9 +39,7 @@ let config = {
 if (!dev) {
     config = merge(config, {
         devtool: false,
-        plugins: [
-            new webpack.optimize.UglifyJsPlugin()
-        ]
+        mode: 'production'
     });
 }
 
