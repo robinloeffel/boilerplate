@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const del = require('del');
-const stylish = require('jshint-stylish');
 const open = require('open');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
@@ -13,7 +12,7 @@ const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 const cleanCss = require('gulp-clean-css');
 const sourcemaps = require('gulp-sourcemaps');
-const jshint = require('gulp-jshint');
+const eslint = require('gulp-eslint');
 const imagemin = require('gulp-imagemin');
 const gIf = require('gulp-if');
 
@@ -59,19 +58,8 @@ gulp.task('js:transpile', () => {
 gulp.task('js:lint', () => {
     return gulp.src(paths.src.files.js.all)
         .pipe(plumber())
-        .pipe(jshint({
-            esversion: 6,
-            node: true,
-            browser: true,
-            eqeqeq: true,
-            latedef: true,
-            undef: true,
-            unused: true,
-            varstmt: true,
-            module: true,
-            strict: true
-        }))
-        .pipe(jshint.reporter(stylish));
+        .pipe(eslint())
+        .pipe(eslint.format());
 });
 
 gulp.task('img', () => {
