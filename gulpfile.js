@@ -91,10 +91,12 @@ gulp.task('copy', () => {
         .pipe(connect.reload());
 });
 
-gulp.watch(paths.src.files.sass, gulp.series('sass'));
-gulp.watch(paths.src.files.js.all, gulp.series('js:lint', 'js:transpile'));
-gulp.watch(paths.src.files.img, gulp.series('img'));
-gulp.watch(paths.src.files.sass, gulp.series('copy'));
 
+gulp.task('watch:js', () => gulp.watch(paths.src.files.js.all, gulp.series('js:lint', 'js:transpile')));
+gulp.task('watch:css', () => gulp.watch(paths.src.files.sass, gulp.series('sass')));
+gulp.task('watch:img', () => gulp.watch(paths.src.files.img, gulp.series('img')));
+gulp.task('watch:root', () => gulp.watch(paths.src.files.root, gulp.series('copy')));
+
+gulp.task('watch', gulp.parallel('watch:js', 'watch:css', 'watch:img', 'watch:root'));
 gulp.task('build', gulp.parallel('js:lint', 'js:transpile', 'sass', 'img', 'copy'));
-gulp.task('default', gulp.series('clean', 'build', 'server', 'open:page'));
+gulp.task('default', gulp.series('clean', 'build', 'server', 'open:page', 'watch'));
