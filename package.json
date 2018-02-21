@@ -13,19 +13,19 @@
         "js"
     ],
     "dependencies": {
-        "@babel/polyfill": "^7.0.0-beta.38"
+        "@babel/polyfill": "^7.0.0-beta.40"
     },
     "devDependencies": {
-        "@babel/core": "^7.0.0-beta.38",
-        "@babel/preset-env": "^7.0.0-beta.38",
-        "babel-eslint": "^8.2.1",
+        "@babel/core": "^7.0.0-beta.40",
+        "@babel/preset-env": "^7.0.0-beta.40",
+        "babel-eslint": "^8.2.2",
         "babel-loader": "^8.0.0-beta.0",
         "del": "^3.0.0",
         "gulp": "^4.0.0",
         "gulp-autoprefixer": "^4.1.0",
         "gulp-changed": "^3.2.0",
         "gulp-clean-css": "^3.9.2",
-        "gulp-connect": "^5.2.0",
+        "gulp-connect": "^5.4.0",
         "gulp-eslint": "^4.0.2",
         "gulp-if": "^2.0.2",
         "gulp-imagemin": "^4.1.0",
@@ -34,10 +34,10 @@
         "gulp-sourcemaps": "^2.6.4",
         "open": "^0.0.5",
         "vinyl-named": "^1.1.0",
-        "webpack": "^4.0.0-beta.0",
-        "webpack-bundle-analyzer": "^2.9.2",
+        "webpack": "^4.0.0-beta.2",
+        "webpack-bundle-analyzer": "^2.10.0",
         "webpack-merge": "^4.1.1",
-        "webpack-stream": "^4.0.0"
+        "webpack-stream": "^4.0.1"
     },
     "scripts": {
         "dev": "gulp --dev",
