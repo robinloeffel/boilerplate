@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const webpackBundleAnalyzer = require('webpack-bundle-analyzer');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const browserlistConfig = require('./browserlist');
 const dev = process.argv.includes('--dev');
 const stats = process.argv.includes('--stats');
@@ -46,7 +46,7 @@ if (!dev) {
 if (stats) {
     config = merge(config, {
         plugins: [
-            new webpackBundleAnalyzer.BundleAnalyzerPlugin({
+            new BundleAnalyzerPlugin({
                 analyzerMode: 'static'
             })
         ]
