@@ -92,10 +92,25 @@ gulp.task('copy', () => {
 });
 
 
-gulp.task('watch:js', () => gulp.watch(paths.src.files.js.all, gulp.series('js:lint', 'js:transpile')));
-gulp.task('watch:css', () => gulp.watch(paths.src.files.sass, gulp.series('sass')));
-gulp.task('watch:img', () => gulp.watch(paths.src.files.img, gulp.series('img')));
-gulp.task('watch:root', () => gulp.watch(paths.src.files.root, gulp.series('copy')));
+gulp.task('watch:js', done => {
+    gulp.watch(paths.src.files.js.all, gulp.series('js:lint', 'js:transpile'));
+    done();
+});
+
+gulp.task('watch:css', done => {
+    gulp.watch(paths.src.files.sass, gulp.series('sass'));
+    done();
+});
+
+gulp.task('watch:img', done => {
+    gulp.watch(paths.src.files.img, gulp.series('img'));
+    done();
+});
+
+gulp.task('watch:root', done => {
+    gulp.watch(paths.src.files.root, gulp.series('copy'));
+    done();
+});
 
 gulp.task('watch', gulp.parallel('watch:js', 'watch:css', 'watch:img', 'watch:root'));
 gulp.task('build', gulp.parallel('js:lint', 'js:transpile', 'sass', 'img', 'copy'));

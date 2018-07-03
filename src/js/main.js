@@ -3,5 +3,5 @@
 const node = document.querySelector('.replace-my-content');
 
 setTimeout(() => {
-    node.innerHTML = 'Yeh dude';
+    node.innerHTML = 'Yeh bro';
 }, 1000);
